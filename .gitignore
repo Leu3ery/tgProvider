@@ -1,0 +1,16 @@
+node_modules/
+dist/
+
+.env
+.env.compose
+
+.vscode/
+.idea/
+
+.DS_Store
+
+
+public
+
+src/frontend/
+src/database.sqlite
