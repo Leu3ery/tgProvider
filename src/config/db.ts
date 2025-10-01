@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm";
 import { config } from "./config.js";
 import { User } from "../modules/users/users.model.js";
+import { Transaction } from "../modules/transacations/transaction.model.js";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -9,9 +10,9 @@ export const AppDataSource = new DataSource({
     username: config.POSGRE_USERNAME,
     password: config.POSGRE_PASSWORD,
     database: config.POSGRE_DB,
-    // synchronize: true,
+    synchronize: true,
     logging: true,
-    entities: [User],
+    entities: [User, Transaction],
     subscribers: [],
     migrations: [],
 })
