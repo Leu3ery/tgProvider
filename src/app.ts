@@ -35,9 +35,11 @@ app.use(express.json())
 
 // ROUTES
 import usersRouter from './modules/users/users.routes.js'
+import paymentRouter from './modules/transacations/transaction.routes.js'
 // import spacesRouter from './modules/spaces/spaces.routes'
 
 app.use('/api/users', usersRouter)
+app.use('/api/payment', paymentRouter)
 // app.use('/api/spaces', spacesRouter)
 
 

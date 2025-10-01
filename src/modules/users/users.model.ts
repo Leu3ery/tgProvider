@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryColumn } from "typeorm"
+import { Entity, Column, PrimaryColumn, OneToMany } from "typeorm"
+import type { Relation } from "typeorm"
+import { Transaction } from "../transacations/transaction.model.js"
 
 @Entity()
 export class User {
@@ -14,4 +16,7 @@ export class User {
 
     @Column()
     balance!: number
+
+    @OneToMany(() => Transaction, (transaction) => transaction.user)
+    transactions!: Relation<Transaction[]>
 }

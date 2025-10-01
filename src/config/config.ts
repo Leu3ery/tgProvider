@@ -9,7 +9,8 @@ interface Config {
     POSGRE_PASSWORD: string,
     POSGRE_DB: string,
     DOMEN: string,
-    BOT_SECRET: string
+    BOT_SECRET: string,
+    TON_ACCOUNT: string
 }
 
 export const config: Config = {
@@ -20,5 +21,6 @@ export const config: Config = {
     POSGRE_PASSWORD: process.env.POSGRE_PASSWORD || "qwerty",
     POSGRE_DB: process.env.POSGRE_DB || "tgProvider",
     DOMEN: process.env.DOMEN || "*",
-    BOT_SECRET: process.env.BOT_SECRET || ""
+    BOT_SECRET: process.env.BOT_SECRET || "",
+    TON_ACCOUNT: process.env.TON_ACCOUNT || "UQCtOPd3wnPJJXfAMOcy1GUKhEhiQl8kCh3Gq1dIi0UXv2Zw"
 }
