@@ -1,11 +1,17 @@
-import { transactionRepository } from "../../server.js";
+import { ErrorWithStatus } from "../../common/middelwares/errorHandlerMiddleware.js";
+import { transactionRepository, userRepository } from "../../server.js";
 import { CreateTransactionDTO } from "./transaction.dto.js";
 import { Transaction } from "./transaction.model.js";
 
 const transactionsService = {
     async createTransaction(userId: number, dto: CreateTransactionDTO) {
+        const user = await userRepository.findOneBy({ id: userId });
+        if (!user) {
+            throw new ErrorWithStatus(404, "User not found");
+        }
+
         let transaction = new Transaction();
-        transaction.user = { id: userId } as any;
+        transaction.user = user;
         transaction.senderAddress = dto.senderAddress;
         transaction.sandAt = new Date();
         transaction.amount = dto.amount;
@@ -15,7 +21,11 @@ const transactionsService = {
     }, 
 
     async getMyTransactions(userId: number) {
-        const transactions = await transactionRepository.find();
+        const transactions = await transactionRepository.find({
+            where: { user: { id: userId }, status: "completed" },
+            order: { sandAt: "DESC" },
+            relations: ["user"]
+        });
 
         return transactions.map(tx => ({
             id: tx.id,
@@ -23,7 +33,8 @@ const transactionsService = {
             senderAddress: tx.senderAddress,
             amount: tx.amount,
             status: tx.status,
-            type: tx.type
+            type: tx.type,
+            userId: tx.user.id
         }));
     }
 }
