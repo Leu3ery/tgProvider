@@ -10,7 +10,8 @@ interface Config {
     POSGRE_DB: string,
     DOMEN: string,
     BOT_SECRET: string,
-    TON_ACCOUNT: string
+    TON_ACCOUNT: string,
+    TONCENTER_API_KEY: string
 }
 
 export const config: Config = {
@@ -22,5 +23,6 @@ export const config: Config = {
     POSGRE_DB: process.env.POSGRE_DB || "tgProvider",
     DOMEN: process.env.DOMEN || "*",
     BOT_SECRET: process.env.BOT_SECRET || "",
-    TON_ACCOUNT: process.env.TON_ACCOUNT || "UQCtOPd3wnPJJXfAMOcy1GUKhEhiQl8kCh3Gq1dIi0UXv2Zw"
+    TON_ACCOUNT: process.env.TON_ACCOUNT || "UQCtOPd3wnPJJXfAMOcy1GUKhEhiQl8kCh3Gq1dIi0UXv2Zw",
+    TONCENTER_API_KEY: process.env.TONCENTER_API_KEY || ""
 }
