@@ -4,13 +4,21 @@ dotenv.config()
 interface Config {
     PORT: number,
     JWT_SECRET: string,
-    POSGRE_SQL: string,
-    DOMEN: string
+    POSGRE_HOST: string,
+    POSGRE_USERNAME: string,
+    POSGRE_PASSWORD: string,
+    POSGRE_DB: string,
+    DOMEN: string,
+    BOT_SECRET: string
 }
 
 export const config: Config = {
     PORT: Number(process.env.PORT) || 3000,
     JWT_SECRET: process.env.JWT_SECRET || "secret",
-    POSGRE_SQL: process.env.POSGRE_SQL || "mongodb://127.0.0.1:27017/htlgram",
-    DOMEN: process.env.DOMEN || "*"
+    POSGRE_HOST: process.env.POSGRE_SQL || "localhost",
+    POSGRE_USERNAME: process.env.POSGRE_USERNAME || "qwerty",
+    POSGRE_PASSWORD: process.env.POSGRE_PASSWORD || "qwerty",
+    POSGRE_DB: process.env.POSGRE_DB || "tgProvider",
+    DOMEN: process.env.DOMEN || "*",
+    BOT_SECRET: process.env.BOT_SECRET || ""
 }
