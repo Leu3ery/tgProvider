@@ -11,7 +11,8 @@ interface Config {
     DOMEN: string,
     BOT_SECRET: string,
     TON_ACCOUNT: string,
-    TONCENTER_API_KEY: string
+    TONCENTER_API_KEY: string,
+    TRANSACTIONS_LIFETIME: number
 }
 
 export const config: Config = {
@@ -24,5 +25,6 @@ export const config: Config = {
     DOMEN: process.env.DOMEN || "*",
     BOT_SECRET: process.env.BOT_SECRET || "",
     TON_ACCOUNT: process.env.TON_ACCOUNT || "UQCtOPd3wnPJJXfAMOcy1GUKhEhiQl8kCh3Gq1dIi0UXv2Zw",
-    TONCENTER_API_KEY: process.env.TONCENTER_API_KEY || ""
+    TONCENTER_API_KEY: process.env.TONCENTER_API_KEY || "",
+    TRANSACTIONS_LIFETIME: Number(process.env.TRANSACTIONS_LIFETIME) || 5
 }

@@ -10,7 +10,7 @@ async function fetchTransactions() {
     const url = "https://toncenter.com/api/v3/transactions";
     const params = {
       account: config.TON_ACCOUNT,
-      limit: 10,
+      limit: 20,
       offset: 0,
       sort: "desc",
       api_key: config.TONCENTER_API_KEY,
@@ -38,7 +38,7 @@ function toUserFriendly(addrRaw: string) {
 export async function transactionsChecker() {
   setInterval(async () => {
     try {
-      const {transactions, address_book} = await fetchTransactions();
+      const { transactions, address_book } = await fetchTransactions();
 
       if (!transactions.length) return;
 
@@ -52,6 +52,8 @@ export async function transactionsChecker() {
         (t: any) => BigInt(t.lt) > BigInt(lastLt!)
       );
 
+      // Process new transactions
+
       if (newTransactions.length > 0) {
         console.log(`🔔 Found ${newTransactions.length} new transactions:`);
         for (const t of newTransactions.reverse()) {
@@ -60,37 +62,57 @@ export async function transactionsChecker() {
             ? toUserFriendly(t.in_msg.destination)
             : "—";
           const amount = Number(t.in_msg?.value || 0);
-          
-            const transFromDB = await transactionRepository.findOne({
-                where: {
-                    status: 'pending',
-                    amount: amount,
-                    senderAddress: from,
-                    type: 'deposit'
-                },
-                order: { id: "DESC" },
-                relations: ["user"]
-            })
 
-            if (transFromDB) {
-                const user = await userRepository.findOneBy({ id: transFromDB.user.id });
-                if (user) {
-                    user.balance += amount;
-                    await userRepository.save(user);
+          const transFromDB = await transactionRepository.findOne({
+            where: {
+              status: "pending",
+              amount: amount,
+              senderAddress: from,
+              type: "deposit",
+            },
+            order: { sandAt: "ASC" },
+            relations: ["user"],
+          });
 
-                    transFromDB.status = 'completed';
-                    await transactionRepository.save(transFromDB);
+          if (transFromDB) {
+            const user = await userRepository.findOneBy({
+              id: transFromDB.user.id,
+            });
+            if (user) {
+              user.balance += amount;
+              await userRepository.save(user);
 
-                    console.log(`   ✔️ Credited ${amount} TON to user ${user.id} (${user.username})`);
-                } else {
-                    console.log(`   ❌ User not found for transaction ID ${transFromDB.id}`);
-                }
+              transFromDB.status = "completed";
+              await transactionRepository.save(transFromDB);
+
+              console.log(
+                `   ✔️ Credited ${amount} TON to user ${user.id} (${user.username})`
+              );
+            } else {
+              console.log(
+                `   ❌ User not found for transaction ID ${transFromDB.id}`
+              );
             }
+          }
 
           console.log(`💸 ${from} → ${to} : ${amount} TON`);
         }
 
         lastLt = transactions[0].lt;
+      }
+
+        // Cleanup old pending transactions
+
+      const deleteRes = await transactionRepository
+        .createQueryBuilder()
+        .delete()
+        .where("status = :status", { status: "pending" })
+        .andWhere(`sandAt < NOW() - INTERVAL '${config.TRANSACTIONS_LIFETIME} minutes'`)
+        .execute();
+      if (deleteRes.affected && deleteRes.affected > 0) {
+        console.log(
+          `🧹 Cleaned up ${deleteRes.affected} old pending transactions`
+        );
       }
     } catch (e: any) {
       console.error("❌ Error in checker:", e.message);

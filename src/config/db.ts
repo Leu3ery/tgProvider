@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
     password: config.POSGRE_PASSWORD,
     database: config.POSGRE_DB,
     synchronize: true,
-    logging: true,
+    // logging: true,
     entities: [User, Transaction],
     subscribers: [],
     migrations: [],
