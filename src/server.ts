@@ -9,6 +9,7 @@ import { transactionsChecker } from './transactionsChecker.js'
 
 export let userRepository: Repository<User>;
 export let transactionRepository: Repository<Transaction>;
+export let starRepository: Repository<Transaction>;
 
 const startServer = async () => {
     try {
@@ -16,6 +17,7 @@ const startServer = async () => {
 
         userRepository = AppDataSource.getRepository(User)
         transactionRepository = AppDataSource.getRepository(Transaction)
+        starRepository = AppDataSource.getRepository(Transaction)
 
         await transactionsChecker()
 
