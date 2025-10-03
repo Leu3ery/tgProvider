@@ -2,6 +2,7 @@ import { DataSource } from "typeorm";
 import { config } from "./config.js";
 import { User } from "../modules/users/users.model.js";
 import { Transaction } from "../modules/transacations/transaction.model.js";
+import { Star } from "../modules/stars/stars.model.js";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
     database: config.POSGRE_DB,
     synchronize: true,
     // logging: true,
-    entities: [User, Transaction],
+    entities: [User, Transaction, Star],
     subscribers: [],
     migrations: [],
 })

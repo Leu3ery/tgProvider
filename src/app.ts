@@ -36,11 +36,12 @@ app.use(express.json())
 // ROUTES
 import usersRouter from './modules/users/users.routes.js'
 import paymentRouter from './modules/transacations/transaction.routes.js'
-// import spacesRouter from './modules/spaces/spaces.routes'
+import starRouter from './modules/stars/stars.routes.js'
 
 app.use('/api/users', usersRouter)
-app.use('/api/payment', paymentRouter)
-// app.use('/api/spaces', spacesRouter)
+app.use('/api/transactions', paymentRouter)
+app.use('/api/stars', starRouter)
+
 
 
 // Additional handlers
