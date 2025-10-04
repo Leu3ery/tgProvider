@@ -6,6 +6,8 @@ import starsControllers from './stars.controllers.js'
 const router = express.Router()
 
 router.post('/proofUsername', ErrorWrapper(starsControllers.proofUsername))
+router.get('/getTonRate', ErrorWrapper(starsControllers.getTonRate))
+router.post('/buyStars', JWTMiddleware, ErrorWrapper(starsControllers.buyStars))
 
 export default router
 

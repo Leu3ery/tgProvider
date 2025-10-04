@@ -15,7 +15,7 @@ export class User {
     photo!: string
 
 
-    @Column()
+    @Column({type: "bigint", default: 0})
     balance!: number
 
     @OneToMany(() => Transaction, (transaction) => transaction.user)

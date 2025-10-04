@@ -15,6 +15,8 @@ interface Config {
     TRANSACTIONS_LIFETIME: number,
     TONNEL_COOKIE: string,
     TONNEL_HASH: string,
+    COMISION_PERCENT: number,
+    MNEMONIC: string,
 }
 
 export const config: Config = {
@@ -31,4 +33,6 @@ export const config: Config = {
     TRANSACTIONS_LIFETIME: Number(process.env.TRANSACTIONS_LIFETIME) || 5,
     TONNEL_COOKIE: process.env.TONNEL_COOKIE || "",
     TONNEL_HASH: process.env.TONNEL_HASH || "",
+    COMISION_PERCENT: Number(process.env.COMISION_PERCENT) || 1.1,
+    MNEMONIC: process.env.MNEMONIC || "",
 }
