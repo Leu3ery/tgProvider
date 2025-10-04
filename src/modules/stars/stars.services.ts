@@ -329,6 +329,22 @@ export const starsService = {
       `   ✔️ User ${userId} paid ${userToPay} TON for ${dto.amount} stars to ${recipient}`
     );
   },
+
+  async getStarsTransactions(userId: number) {
+    const stars = await starRepository.find({
+        where: { user: { id: userId } },
+        order: { sandAt: "DESC" },
+        relations: ["user"]
+    });
+
+    return stars.map(star => ({
+        id: star.id,
+        sandAt: star.sandAt,
+        amount: star.amount,
+        price: star.price,
+        receiverUsername: star.receiverUsername,
+    }));
+  }
 };
 
 export default starsService;

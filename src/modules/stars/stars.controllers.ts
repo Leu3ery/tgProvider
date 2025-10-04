@@ -35,6 +35,14 @@ const starsControllers = {
     await starsService.buyStars(userId, dto);
 
     res.status(201).end();
+  },
+
+  async getStarsTransactions(req: Request, res: Response, next: NextFunction) {
+    const userId = res.locals.user.userId;
+
+    const stars = await starsService.getStarsTransactions(userId);
+
+    res.status(200).json(stars);
   }
 };
 
