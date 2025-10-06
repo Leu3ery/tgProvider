@@ -62,12 +62,14 @@ export async function transactionsChecker() {
             ? toUserFriendly(t.in_msg.destination)
             : "—";
           const amount = Number(t.in_msg?.value || 0);
+          // console.log(t.in_msg.source.toLowerCase())
+          // console.log(amount)
 
           const transFromDB = await transactionRepository.findOne({
             where: {
               status: "pending",
               amount: amount,
-              senderAddress: from,
+              senderAddress: t.in_msg.source.toLowerCase(),
               type: "deposit",
             },
             order: { sandAt: "ASC" },
@@ -79,7 +81,7 @@ export async function transactionsChecker() {
               id: transFromDB.user.id,
             });
             if (user) {
-              user.balance += amount;
+              user.balance = Number(user.balance) + Number(amount);
               await userRepository.save(user);
 
               transFromDB.status = "completed";
@@ -95,7 +97,7 @@ export async function transactionsChecker() {
             }
           }
 
-          console.log(`💸 ${from} → ${to} : ${amount} TON`);
+          // console.log(`💸 ${from} → ${to} : ${amount} TON`);
         }
 
         lastLt = transactions[0].lt;
