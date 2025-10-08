@@ -59,6 +59,8 @@ export async function transactionsChecker() {
 
         try {
           for (const t of newTransactions.reverse()) {
+            if (!t.in_msg.source || !t.in_msg.destination) continue;
+            if (t.in_msg.source === t.in_msg.destination) continue;
             const from = t.in_msg?.source
               ? toUserFriendly(t.in_msg.source)
               : "—";
@@ -103,7 +105,9 @@ export async function transactionsChecker() {
 
             console.log(`💸 ${from} → ${to} : ${amount} TON`);
           }
-        } catch (e) {}
+        } catch (e) {
+
+        }
 
         lastLt = transactions[0].lt;
       }
