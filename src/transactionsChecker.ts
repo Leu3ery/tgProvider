@@ -56,60 +56,67 @@ export async function transactionsChecker() {
 
       if (newTransactions.length > 0) {
         console.log(`🔔 Found ${newTransactions.length} new transactions:`);
-        for (const t of newTransactions.reverse()) {
-          const from = t.in_msg?.source ? toUserFriendly(t.in_msg.source) : "—";
-          const to = t.in_msg?.destination
-            ? toUserFriendly(t.in_msg.destination)
-            : "—";
-          const amount = Number(t.in_msg?.value || 0);
-          // console.log(t.in_msg.source.toLowerCase())
-          // console.log(amount)
 
-          const transFromDB = await transactionRepository.findOne({
-            where: {
-              status: "pending",
-              amount: amount,
-              senderAddress: t.in_msg.source.toLowerCase(),
-              type: "deposit",
-            },
-            order: { sandAt: "ASC" },
-            relations: ["user"],
-          });
+        try {
+          for (const t of newTransactions.reverse()) {
+            const from = t.in_msg?.source
+              ? toUserFriendly(t.in_msg.source)
+              : "—";
+            const to = t.in_msg?.destination
+              ? toUserFriendly(t.in_msg.destination)
+              : "—";
+            const amount = Number(t.in_msg?.value || 0);
+            // console.log(t.in_msg.source.toLowerCase())
+            // console.log(amount)
 
-          if (transFromDB) {
-            const user = await userRepository.findOneBy({
-              id: transFromDB.user.id,
+            const transFromDB = await transactionRepository.findOne({
+              where: {
+                status: "pending",
+                amount: amount,
+                senderAddress: t.in_msg.source.toLowerCase(),
+                type: "deposit",
+              },
+              order: { sandAt: "ASC" },
+              relations: ["user"],
             });
-            if (user) {
-              user.balance = Number(user.balance) + Number(amount);
-              await userRepository.save(user);
 
-              transFromDB.status = "completed";
-              await transactionRepository.save(transFromDB);
+            if (transFromDB) {
+              const user = await userRepository.findOneBy({
+                id: transFromDB.user.id,
+              });
+              if (user) {
+                user.balance = Number(user.balance) + Number(amount);
+                await userRepository.save(user);
 
-              console.log(
-                `   ✔️ Credited ${amount} TON to user ${user.id} (${user.username})`
-              );
-            } else {
-              console.log(
-                `   ❌ User not found for transaction ID ${transFromDB.id}`
-              );
+                transFromDB.status = "completed";
+                await transactionRepository.save(transFromDB);
+
+                console.log(
+                  `   ✔️ Credited ${amount} TON to user ${user.id} (${user.username})`
+                );
+              } else {
+                console.log(
+                  `   ❌ User not found for transaction ID ${transFromDB.id}`
+                );
+              }
             }
-          }
 
-          // console.log(`💸 ${from} → ${to} : ${amount} TON`);
-        }
+            console.log(`💸 ${from} → ${to} : ${amount} TON`);
+          }
+        } catch (e) {}
 
         lastLt = transactions[0].lt;
       }
 
-        // Cleanup old pending transactions
+      // Cleanup old pending transactions
 
       const deleteRes = await transactionRepository
         .createQueryBuilder()
         .delete()
         .where("status = :status", { status: "pending" })
-        .andWhere(`sandAt < NOW() - INTERVAL '${config.TRANSACTIONS_LIFETIME} minutes'`)
+        .andWhere(
+          `sandAt < NOW() - INTERVAL '${config.TRANSACTIONS_LIFETIME} minutes'`
+        )
         .execute();
       if (deleteRes.affected && deleteRes.affected > 0) {
         console.log(
