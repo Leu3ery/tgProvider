@@ -10,10 +10,10 @@ export class Star {
     @Column()
     sandAt!: Date
 
-    @Column({type: "bigint"})
+    @Column({type: "bigint", default: 0})
     amount!: number
 
-    @Column({type: "bigint"})
+    @Column({type: "bigint", default: 0})
     price!: number
 
     @Column()
