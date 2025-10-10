@@ -13,7 +13,7 @@ export class Transaction {
     @Column()
     senderAddress!: string
 
-    @Column()
+    @Column({type: "bigint"})
     amount!: number
 
     @Column()

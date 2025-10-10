@@ -5,7 +5,7 @@ import { Star } from "../stars/stars.model.js"
 
 @Entity()
 export class User {
-    @PrimaryColumn()
+    @PrimaryColumn({type: "bigint"})
     id!: number
 
     @Column()
