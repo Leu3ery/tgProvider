@@ -8,11 +8,13 @@ import { fileURLToPath } from 'url';
 
 const app = express()
 
-app.set('trust proxy', true);
+app.set('trust proxy', 1);
 // limiter
 const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
     message: "Too many requests from this IP, please try again after 1 minutes"
 })
 
