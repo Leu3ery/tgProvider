@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 
 const app = express()
 
+app.set('trust proxy', true);
 // limiter
 const limiter = rateLimit({
     windowMs: 60 * 1000,
