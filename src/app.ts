@@ -28,6 +28,17 @@ if (!fs.existsSync(publicDir)) {
 }
 
 app.use('/public', express.static(publicDir))
+
+// Request logging middleware
+app.use((req, res, next) => {
+    const timestamp = new Date().toISOString()
+    const method = req.method
+    const url = req.url
+    const ip = req.ip || req.socket.remoteAddress
+    console.log(`[${timestamp}] ${method} ${url} - IP: ${ip}`)
+    next()
+})
+
 app.use(limiter)
 app.use(cors({
   origin: config.DOMEN
