@@ -10,7 +10,5 @@ dist/
 .DS_Store
 
 
-public
-
 src/frontend/
 src/database.sqlite
