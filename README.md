@@ -49,7 +49,7 @@ PORT=3000
 JWT_SECRET=jwt_secret
 
 # PostgreSQL Configuration
-POSGRE_SQL=localhost
+POSGRE_HOST=localhost
 POSGRE_USERNAME=postgres
 POSGRE_PASSWORD=your_password
 POSGRE_DB=tgProvider

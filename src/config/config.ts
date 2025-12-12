@@ -22,7 +22,7 @@ interface Config {
 export const config: Config = {
     PORT: Number(process.env.PORT) || 3000,
     JWT_SECRET: process.env.JWT_SECRET || "secret",
-    POSGRE_HOST: process.env.POSGRE_SQL || "localhost",
+    POSGRE_HOST: process.env.POSGRE_HOST || "localhost",
     POSGRE_USERNAME: process.env.POSGRE_USERNAME || "qwerty",
     POSGRE_PASSWORD: process.env.POSGRE_PASSWORD || "qwerty",
     POSGRE_DB: process.env.POSGRE_DB || "tgProvider",
