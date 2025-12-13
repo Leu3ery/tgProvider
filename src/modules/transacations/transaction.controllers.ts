@@ -14,6 +14,14 @@ const transactionsController = {
       req.body || {}
     );
 
+    console.log(`[TRANSACTION] API request to create transaction:`, {
+      userId: userId,
+      type: dto.type,
+      amount: dto.amount,
+      senderAddress: dto.senderAddress,
+      ip: req.ip || req.socket.remoteAddress
+    });
+
     await transactionsService.createTransaction(userId, dto);
 
     res.status(201).end();
@@ -21,6 +29,8 @@ const transactionsController = {
 
   async getMyTransactions(req: Request, res: Response) {
     const userId = res.locals.user.userId;
+
+    console.log(`[TRANSACTION] API request to get transactions for user ${userId}`);
 
     const transactions = await transactionsService.getMyTransactions(userId);
 

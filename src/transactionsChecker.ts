@@ -55,10 +55,16 @@ export async function transactionsChecker() {
       // Process new transactions
 
       if (newTransactions.length > 0) {
+        console.log(`[TRANSACTION] 🔔 Found ${newTransactions.length} new transactions`);
         console.log(`🔔 Found ${newTransactions.length} new transactions:`);
 
         try {
           for (const t of newTransactions.reverse()) {
+            console.log(`[TRANSACTION] Processing transaction:`, {
+              lt: t.lt,
+              hash: t.hash,
+              timestamp: new Date(Number(t.now) * 1000).toISOString()
+            });
             if (!t.in_msg.source || !t.in_msg.destination) continue;
             if (t.in_msg.source === t.in_msg.destination) continue;
             const from = t.in_msg?.source
@@ -87,12 +93,26 @@ export async function transactionsChecker() {
                 id: transFromDB.user.id,
               });
               if (user) {
-                user.balance = Number(user.balance) + Number(amount);
+                const oldBalance = Number(user.balance);
+                user.balance = oldBalance + Number(amount);
                 await userRepository.save(user);
 
                 transFromDB.status = "completed";
                 await transactionRepository.save(transFromDB);
 
+                console.log(`[TRANSACTION] Transaction completed:`, {
+                  transactionId: transFromDB.id,
+                  userId: user.id,
+                  username: user.username,
+                  amount: amount,
+                  oldBalance: oldBalance,
+                  newBalance: user.balance,
+                  senderAddress: from,
+                  receiverAddress: to,
+                  type: transFromDB.type,
+                  completedAt: new Date().toISOString()
+                });
+                
                 console.log(
                   `   ✔️ Credited ${amount} TON to user ${user.id} (${user.username})`
                 );
@@ -101,6 +121,13 @@ export async function transactionsChecker() {
                   `   ❌ User not found for transaction ID ${transFromDB.id}`
                 );
               }
+            } else {
+              console.log(`[TRANSACTION] No matching pending transaction found:`, {
+                amount: amount,
+                senderAddress: t.in_msg.source.toLowerCase(),
+                from: from,
+                to: to
+              });
             }
 
             console.log(`💸 ${from} → ${to} : ${amount} TON`);
