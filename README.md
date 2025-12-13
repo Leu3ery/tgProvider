@@ -2,6 +2,8 @@
 
 TgProvider is a custom backend for the Telegram Mini App that enables users to purchase Telegram Stars (internal currency) at a 30% discount using TON cryptocurrency.
 
+🌐 **Bot is now available**: [https://t.me/yourtgprovider_bot](https://t.me/yourtgprovider_bot)
+
 The project consists of:
 
 **Backend** – handles authentication, user management, cryptocurrency transactions, and Telegram Stars purchasing.
@@ -138,6 +140,7 @@ tgProvider/
 ## 🔗 Related Repositories
 
 - **Frontend**: [tgProviderFront](https://github.com/Leu3ery/tgProviderFront) - Angular-based Telegram Mini App frontend
+- **Bot**: [tgProviderBot](https://github.com/Leu3ery/tgProviderBot) - Telegram bot repository
 
 ## 📝 API Endpoints
 
