@@ -27,7 +27,7 @@ if (!fs.existsSync(publicDir)) {
   console.log(`Created missing directory: ${publicDir}`);
 }
 
-app.use('/public', express.static(publicDir))
+app.use('/api/public', express.static(publicDir))
 
 // Request logging middleware
 app.use((req, res, next) => {
