@@ -17,7 +17,21 @@ const transactionsService = {
         transaction.amount = dto.amount;
         transaction.status = "pending";
         transaction.type = dto.type;
-        await transactionRepository.save(transaction);
+        
+        const savedTransaction = await transactionRepository.save(transaction);
+        
+        console.log(`[TRANSACTION] Created new transaction:`, {
+            id: savedTransaction.id,
+            userId: user.id,
+            username: user.username,
+            type: dto.type,
+            amount: dto.amount,
+            senderAddress: dto.senderAddress,
+            status: "pending",
+            createdAt: transaction.sandAt.toISOString()
+        });
+        
+        return savedTransaction;
     }, 
 
     async getMyTransactions(userId: number) {
@@ -26,6 +40,8 @@ const transactionsService = {
             order: { sandAt: "DESC" },
             relations: ["user"]
         });
+
+        console.log(`[TRANSACTION] Retrieved ${transactions.length} completed transactions for user ${userId}`);
 
         return transactions.map(tx => ({
             id: tx.id,
