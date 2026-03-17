@@ -51,10 +51,12 @@ app.use(express.json())
 import usersRouter from './modules/users/users.routes.js'
 import paymentRouter from './modules/transacations/transaction.routes.js'
 import starRouter from './modules/stars/stars.routes.js'
+import premiumRouter from './modules/premium/premium.routes.js'
 
 app.use('/api/users', usersRouter)
 app.use('/api/transactions', paymentRouter)
 app.use('/api/stars', starRouter)
+app.use('/api/premium', premiumRouter)
 
 
 

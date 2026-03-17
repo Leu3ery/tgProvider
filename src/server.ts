@@ -7,10 +7,12 @@ import { Repository } from 'typeorm'
 import { Transaction } from './modules/transacations/transaction.model.js'
 import { transactionsChecker } from './transactionsChecker.js'
 import { Star } from './modules/stars/stars.model.js'
+import { Premium } from './modules/premium/premium.model.js'
 
 export let userRepository: Repository<User>;
 export let transactionRepository: Repository<Transaction>;
 export let starRepository: Repository<Star>;
+export let premiumRepository: Repository<Premium>;
 
 const startServer = async () => {
     try {
@@ -19,6 +21,7 @@ const startServer = async () => {
         userRepository = AppDataSource.getRepository(User)
         transactionRepository = AppDataSource.getRepository(Transaction)
         starRepository = AppDataSource.getRepository(Star)
+        premiumRepository = AppDataSource.getRepository(Premium)
 
         await transactionsChecker()
 
