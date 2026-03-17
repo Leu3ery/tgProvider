@@ -3,6 +3,7 @@ import { config } from "./config.js";
 import { User } from "../modules/users/users.model.js";
 import { Transaction } from "../modules/transacations/transaction.model.js";
 import { Star } from "../modules/stars/stars.model.js";
+import { Premium } from "../modules/premium/premium.model.js";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
     database: config.POSGRE_DB,
     synchronize: true,
     // logging: true,
-    entities: [User, Transaction, Star],
+    entities: [User, Transaction, Star, Premium],
     subscribers: [],
     migrations: [],
 })

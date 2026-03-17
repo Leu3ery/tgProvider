@@ -19,6 +19,6 @@ export class Star {
     @Column()
     receiverUsername!: string
 
-    @ManyToOne(() => User, (user) => user.transactions)
+    @ManyToOne(() => User, (user) => user.stars)
     user!: Relation<User>
 }

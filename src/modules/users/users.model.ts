@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryColumn, OneToMany } from "typeorm"
 import type { Relation } from "typeorm"
 import { Transaction } from "../transacations/transaction.model.js"
 import { Star } from "../stars/stars.model.js"
+import { Premium } from "../premium/premium.model.js"
 
 @Entity()
 export class User {
@@ -23,4 +24,7 @@ export class User {
 
     @OneToMany(() => Star, (star) => star.user)
     stars!: Relation<Star[]>
+
+    @OneToMany(() => Premium, (premium) => premium.user)
+    premiums!: Relation<Premium[]>
 }
